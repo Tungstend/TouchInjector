@@ -1,0 +1,50 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'java'
+}
+
+group 'com.tungsten.touchinjector'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'org.ow2.asm:asm:9.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes (
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor': 'tungsten',
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'Automatic-Module-Name': 'com.tungsten.touchinjector',
+                'Premain-Class': 'com.tungsten.touchinjector.Premain',
+                'Agent-Class': 'com.tungsten.touchinjector.Premain',
+                'Can-Retransform-Classes': true,
+                'Can-Redefine-Classes': true,
+                'Build-Number': '1'
+        )
+    }
+}
+
+shadowJar {
+    classifier = null
+
+    exclude 'META-INF/maven/**'
+    exclude 'module-info.class'
+
+    relocate 'org.objectweb.asm', 'com.tungsten.touchinjector.internal.org.objectweb.asm'
+}
+
+defaultTasks 'shadowJar'

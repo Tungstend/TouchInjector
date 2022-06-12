@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Implementation-Title: TouchInjector
+Implementation-Version: 1.0
+Implementation-Vendor: tungsten
+Implementation-Timestamp: 2022-06-12T17:27:30+0800
+Automatic-Module-Name: com.tungsten.touchinjector
+Premain-Class: com.tungsten.touchinjector.Premain
+Agent-Class: com.tungsten.touchinjector.Premain
+Can-Retransform-Classes: true
+Can-Redefine-Classes: true
+Build-Number: 1
+
