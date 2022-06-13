@@ -75,8 +75,37 @@ public class MainArgumentsTransformer implements TransformUnit {
 	}
 	// ====
 
+	// ==== Version type detection ====
+	private static final List<Consumer<Boolean>> VERSION_TYPE_LISTENERS = new CopyOnWriteArrayList<>();
+
 	// ==== Version series detection ====
 	private static final List<Consumer<String>> VERSION_SERIES_LISTENERS = new CopyOnWriteArrayList<>();
+
+	public static boolean isNotchName(String[] args) {
+		boolean hit = false;
+		for (String arg : args) {
+			if (hit) {
+				if (arg.startsWith("--")) {
+					// arg doesn't seem to be a value
+					// maybe the previous argument is a value, but we wrongly recognized it as an option
+					hit = false;
+				} else if (arg.equals("Forge")) {
+					return true;
+				}
+			}
+
+			if ("--versionType".equals(arg)) {
+				hit = true;
+			}
+			if ("optifine.OptiFineForgeTweaker".equals(arg) || "optifine.OptiFineTweaker".equals(arg)) {
+				return true;
+			}
+			if (arg.startsWith("-DFabric")) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public static Optional<String> inferVersionSeries(String[] args) {
 		boolean hit = false;
@@ -100,12 +129,17 @@ public class MainArgumentsTransformer implements TransformUnit {
 
 	static {
 		getArgumentsListeners().add(args -> {
+			VERSION_TYPE_LISTENERS.forEach(listener -> listener.accept(isNotchName(args)));
 			inferVersionSeries(args).ifPresent(versionSeries -> {
 				log(DEBUG, "Version series detected: " + versionSeries);
 				VERSION_SERIES_LISTENERS.forEach(listener -> listener.accept(versionSeries));
 			});
 			return args;
 		});
+	}
+
+	public static List<Consumer<Boolean>> getVersionTypeListeners() {
+		return VERSION_TYPE_LISTENERS;
 	}
 
 	public static List<Consumer<String>> getVersionSeriesListeners() {

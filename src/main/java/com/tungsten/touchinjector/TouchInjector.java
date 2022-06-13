@@ -45,6 +45,15 @@ public class TouchInjector {
         classTransformer = createTransformer();
         instrumentation.addTransformer(classTransformer, retransformSupported);
 
+        initializeNotchInjector();
+        initializeVanillaInjector();
+    }
+
+    private static void initializeNotchInjector() {
+        NotchRayTracing.init("");
+    }
+
+    private static void initializeVanillaInjector() {
         try {
             Class<?> clazz = Class.forName("VanillaRayTracing");
             Method method= clazz.getMethod("init", String.class);
@@ -63,6 +72,7 @@ public class TouchInjector {
 
     public static void retransformClasses(String... classNames) {
         if (!retransformSupported) {
+            log(WARNING, "Retransform not support");
             return;
         }
         Set<String> classNamesSet = new HashSet<>(Arrays.asList(classNames));
@@ -77,6 +87,9 @@ public class TouchInjector {
             } catch (Throwable e) {
                 log(WARNING, "Failed to retransform", e);
             }
+        }
+        else {
+            log(WARNING, "No class to retransform");
         }
     }
 
@@ -97,6 +110,9 @@ public class TouchInjector {
                 log(WARNING, "Failed to retransform", e);
                 return;
             }
+        }
+        else {
+            log(WARNING, "No class to retransform");
         }
 
         long t1 = System.currentTimeMillis();
