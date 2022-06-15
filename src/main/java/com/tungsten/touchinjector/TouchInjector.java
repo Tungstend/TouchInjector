@@ -1,16 +1,12 @@
 package com.tungsten.touchinjector;
 
+import com.tungsten.touchinjector.raytrace.StartRayTracing;
 import com.tungsten.touchinjector.transform.ClassTransformer;
 import com.tungsten.touchinjector.transform.DumpClassListener;
 import com.tungsten.touchinjector.transform.support.MainArgumentsTransformer;
 
 import java.lang.instrument.Instrumentation;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.tungsten.touchinjector.util.Logging.Level.*;
@@ -25,6 +21,11 @@ public class TouchInjector {
     private static Instrumentation instrumentation;
     private static boolean retransformSupported;
     private static ClassTransformer classTransformer;
+
+    public static String versionType;
+    public static final String VERSION_TYPE_VANILLA = "vanilla";
+    public static final String VERSION_TYPE_FORGE = "forge";
+    public static final String VERSION_TYPE_OPTIFINE = "optifine";
 
     public static synchronized void bootstrap(Instrumentation instrumentation, String arg) throws InitializationException {
         if (booted) {
@@ -45,51 +46,17 @@ public class TouchInjector {
         classTransformer = createTransformer();
         instrumentation.addTransformer(classTransformer, retransformSupported);
 
-        initializeNotchInjector();
-        initializeVanillaInjector();
+        versionType = arg;
+        StartRayTracing.init();
     }
 
-    private static void initializeNotchInjector() {
-        NotchRayTracing.init("");
-    }
-
-    private static void initializeVanillaInjector() {
-        try {
-            Class<?> clazz = Class.forName("VanillaRayTracing");
-            Method method= clazz.getMethod("init", String.class);
-            method.invoke(null, "");
-        } catch (ClassNotFoundException e) {
-            log(ERROR, "Failed to load VanillaRayTracing.class !");
-            throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
-            log(ERROR, "Failed to find method VanillaRayTracing.init() !");
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            log(ERROR, e.getMessage());
-            throw new RuntimeException(e);
+    public static void printAllLoadedClass(ClassLoader classLoader) {
+        Class<?>[] classes = instrumentation.getInitiatedClasses(classLoader);
+        for (Class<?> c : classes) {
+            log(INFO, c.getName());
         }
-    }
-
-    public static void retransformClasses(String... classNames) {
-        if (!retransformSupported) {
-            log(WARNING, "Retransform not support");
-            return;
-        }
-        Set<String> classNamesSet = new HashSet<>(Arrays.asList(classNames));
-        Class<?>[] classes = Stream.of(instrumentation.getAllLoadedClasses())
-                .filter(clazz -> classNamesSet.contains(clazz.getName()))
-                .filter(TouchInjector::canRetransformClass)
-                .toArray(Class[]::new);
-        if (classes.length > 0) {
-            log(INFO, "Attempt to retransform classes: " + Arrays.toString(classes));
-            try {
-                instrumentation.retransformClasses(classes);
-            } catch (Throwable e) {
-                log(WARNING, "Failed to retransform", e);
-            }
-        }
-        else {
-            log(WARNING, "No class to retransform");
+        if (classes.length == 0) {
+            log(WARNING, "No class loaded !");
         }
     }
 

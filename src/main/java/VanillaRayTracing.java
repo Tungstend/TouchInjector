@@ -1,4 +1,3 @@
-import com.tungsten.touchinjector.transform.support.MainArgumentsTransformer;
 import com.tungsten.touchinjector.util.SocketServer;
 
 import java.net.DatagramPacket;
@@ -12,55 +11,14 @@ public class VanillaRayTracing {
 
     private static String version;
 
-    private static int isVanilla;
-    private static int versionSupport;
-
     public static void init(String args) {
-        MainArgumentsTransformer.getVersionSeriesListeners().add(version -> {
-            if (version.startsWith("1.12")) {
-                VanillaRayTracing.version = "1.12";
-            }
-            else if (version.startsWith("1.13")) {
-                VanillaRayTracing.version = "1.13";
-            }
-            else if (version.startsWith("1.14")) {
-                VanillaRayTracing.version = "1.14";
-            }
-            else if (version.startsWith("1.15")) {
-                VanillaRayTracing.version = "1.15";
-            }
-            else if (version.startsWith("1.16")) {
-                VanillaRayTracing.version = "1.16";
-            }
-            else if (version.startsWith("1.17")) {
-                VanillaRayTracing.version = "1.17";
-            }
-            else if (version.startsWith("1.18")) {
-                VanillaRayTracing.version = "1.18";
-            }
-            else if (version.startsWith("1.19")) {
-                VanillaRayTracing.version = "1.19";
-            }
-            else {
-                VanillaRayTracing.version = "unknown";
-                log(WARNING, "TouchInjector does not support this version !");
-            }
-            versionSupport = 1;
-            start();
-        });
-        MainArgumentsTransformer.getVersionTypeListeners().add(bool -> {
-            if (!bool) {
-                isVanilla = 1;
-                start();
-            }
-        });
+        VanillaRayTracing.version = args;
+        start();
     }
 
     private static void start() {
-        if (versionSupport == 1 && isVanilla == 1 && version != null && !version.equals("unknown")) {
-            startSocket();
-            log(INFO, "Enable touchinjector for vanilla " + version);
-        }
+        startSocket();
+        log(INFO, "Enable touchinjector for vanilla " + version);
     }
 
     private static void startSocket() {
@@ -74,7 +32,7 @@ public class VanillaRayTracing {
     }
 
     private static void rayTrace() {
-        Thread thread = new Thread("Raytrace thread") {
+        Thread thread = new Thread("Vanilla Raytrace thread") {
             public void run() {
                 try {
                     log(INFO, "Refresh raytrace result type and send to launcher !");

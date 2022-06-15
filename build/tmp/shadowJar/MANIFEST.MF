@@ -6,7 +6,7 @@ Implementation-Version: 1.0
 Build-Number: 1
 Agent-Class: com.tungsten.touchinjector.Premain
 Can-Redefine-Classes: true
-Implementation-Timestamp: 2022-06-14T14:21:07+0800
+Implementation-Timestamp: 2022-06-15T23:47:30+0800
 Can-Retransform-Classes: true
 Implementation-Vendor: tungsten
 
