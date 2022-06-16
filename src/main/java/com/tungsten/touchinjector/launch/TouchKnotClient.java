@@ -1,4 +1,4 @@
-package com.tungsten.touchinjector;
+package com.tungsten.touchinjector.launch;
 
 import com.tungsten.touchinjector.raytrace.FabricRayTracing;
 import net.fabricmc.api.EnvType;

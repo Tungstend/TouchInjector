@@ -37,6 +37,21 @@ public class VanillaRayTracing {
                 try {
                     log(INFO, "Refresh raytrace result type and send to launcher !");
                     switch (version) {
+                        case "1.7":
+                            sendType(getRaytraceResultType17());
+                            break;
+                        case "1.8":
+                            sendType(getRaytraceResultType18());
+                            break;
+                        case "1.9":
+                            sendType(getRaytraceResultType19());
+                            break;
+                        case "1.10":
+                            sendType(getRaytraceResultType110());
+                            break;
+                        case "1.11":
+                            sendType(getRaytraceResultType111());
+                            break;
                         case "1.12":
                             sendType(getRaytraceResultType112());
                             break;
@@ -71,6 +86,71 @@ public class VanillaRayTracing {
             }
         };
         thread.start();
+    }
+
+    public static String getRaytraceResultType17() {
+        bao minecraft = bao.B();
+        azu target = minecraft.t;
+        if (target != null) {
+            azv type = target.a;
+            return type.name();
+        }
+        else {
+            log(WARNING, "RayTraceResult is null !");
+        }
+        return "UNKNOWN";
+    }
+
+    public static String getRaytraceResultType18() {
+        ave minecraft = ave.A();
+        auh target = minecraft.s;
+        if (target != null) {
+            auh.a type = target.a;
+            return type.name();
+        }
+        else {
+            log(WARNING, "RayTraceResult is null !");
+        }
+        return "UNKNOWN";
+    }
+
+    public static String getRaytraceResultType19() {
+        bcd minecraft = bcd.z();
+        bbg target = minecraft.t;
+        if (target != null) {
+            bbg.a type = target.a;
+            return type.name();
+        }
+        else {
+            log(WARNING, "RayTraceResult is null !");
+        }
+        return "UNKNOWN";
+    }
+
+    public static String getRaytraceResultType110() {
+        bcx minecraft = bcx.z();
+        bbz target = minecraft.t;
+        if (target != null) {
+            bbz.a type = target.a;
+            return type.name();
+        }
+        else {
+            log(WARNING, "RayTraceResult is null !");
+        }
+        return "UNKNOWN";
+    }
+
+    public static String getRaytraceResultType111() {
+        bes minecraft = bes.z();
+        bdu target = minecraft.t;
+        if (target != null) {
+            bdu.a type = target.a;
+            return type.name();
+        }
+        else {
+            log(WARNING, "RayTraceResult is null !");
+        }
+        return "UNKNOWN";
     }
 
     public static String getRaytraceResultType112() {

@@ -11,7 +11,7 @@ import static com.tungsten.touchinjector.util.Logging.log;
 
 public class RayTracingB {
 
-    public static String getRaytraceResultType_b() {
+    public static String getRaytraceResultType() {
         try {
             Field classField = Launcher.class.getDeclaredField("classLoader");
             classField.setAccessible(true);

@@ -3,11 +3,14 @@ package com.tungsten.touchinjector.raytrace;
 import com.tungsten.touchinjector.raytrace.forge.RayTracingA;
 import com.tungsten.touchinjector.raytrace.forge.RayTracingB;
 import com.tungsten.touchinjector.raytrace.forge.RayTracingC;
+import com.tungsten.touchinjector.raytrace.forge.RayTracingD;
 import com.tungsten.touchinjector.util.SocketServer;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.tungsten.touchinjector.util.Logging.Level.*;
 import static com.tungsten.touchinjector.util.Logging.log;
@@ -22,6 +25,18 @@ public class ForgeRayTracing {
     }
 
     private static void start() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft", true, Thread.currentThread().getContextClassLoader());
+                    log(INFO, minecraftClass.getName());
+                } catch (ClassNotFoundException e) {
+                    log(ERROR, e.getMessage());
+                }
+            }
+        }, 1000);
         startSocket();
         log(INFO, "Enable touchinjector for forge " + version);
     }
@@ -37,30 +52,33 @@ public class ForgeRayTracing {
     }
 
     private static void rayTrace() {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Thread thread = new Thread("Forge Raytrace thread") {
             public void run() {
+                Thread.currentThread().setContextClassLoader(classLoader);
                 try {
                     log(INFO, "Refresh raytrace result type and send to launcher !");
                     switch (version) {
+                        case "1.7":
+                        case "1.8":
+                        case "1.9":
+                        case "1.10":
+                        case "1.11":
                         case "1.12":
-                            sendType(RayTracingA.getRaytraceResultType_a());
+                            sendType(RayTracingA.getRaytraceResultType());
                             break;
                         case "1.13":
-                            sendType(RayTracingB.getRaytraceResultType_b());
+                            sendType(RayTracingB.getRaytraceResultType());
                             break;
                         case "1.14":
                         case "1.15":
                         case "1.16":
-                            sendType(RayTracingC.getRaytraceResultType_c());
+                            sendType(RayTracingC.getRaytraceResultType());
                             break;
                         case "1.17":
-                            sendType(getRaytraceResultType117());
-                            break;
                         case "1.18":
-                            sendType(getRaytraceResultType118());
-                            break;
                         case "1.19":
-                            sendType(getRaytraceResultType119());
+                            sendType(RayTracingD.getRaytraceResultType());
                             break;
                         default:
                             log(WARNING, "TouchInjector does not support this version ! Return null.");
@@ -72,21 +90,6 @@ public class ForgeRayTracing {
             }
         };
         thread.start();
-    }
-
-    public static String getRaytraceResultType117() {
-
-        return "UNKNOWN";
-    }
-
-    public static String getRaytraceResultType118() {
-
-        return "UNKNOWN";
-    }
-
-    public static String getRaytraceResultType119() {
-
-        return "UNKNOWN";
     }
 
     private static void sendType(String type) {

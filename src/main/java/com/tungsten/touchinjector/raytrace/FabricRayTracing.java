@@ -12,7 +12,7 @@ import java.net.InetSocketAddress;
 import static com.tungsten.touchinjector.util.Logging.Level.*;
 import static com.tungsten.touchinjector.util.Logging.Level.WARNING;
 import static com.tungsten.touchinjector.util.Logging.log;
-import static com.tungsten.touchinjector.TouchKnotClient.classLoader;
+import static com.tungsten.touchinjector.launch.TouchKnotClient.classLoader;
 
 public class FabricRayTracing {
 

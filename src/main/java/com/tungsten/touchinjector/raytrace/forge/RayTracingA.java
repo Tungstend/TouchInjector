@@ -11,7 +11,7 @@ import static com.tungsten.touchinjector.util.Logging.log;
 
 public class RayTracingA {
 
-    public static String getRaytraceResultType_a() {
+    public static String getRaytraceResultType() {
         try {
             Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft", true, Launch.classLoader);
             Method method = minecraftClass.getDeclaredMethod("func_71410_x");

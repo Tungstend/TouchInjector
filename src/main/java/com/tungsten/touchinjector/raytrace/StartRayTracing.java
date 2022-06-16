@@ -15,7 +15,22 @@ public class StartRayTracing {
 
     public static void init() {
         MainArgumentsTransformer.getVersionSeriesListeners().add(version -> {
-            if (version.startsWith("1.12")) {
+            if (version.startsWith("1.7")) {
+                StartRayTracing.version = "1.7";
+            }
+            else if (version.startsWith("1.8")) {
+                StartRayTracing.version = "1.8";
+            }
+            else if (version.startsWith("1.9")) {
+                StartRayTracing.version = "1.9";
+            }
+            else if (version.startsWith("1.10")) {
+                StartRayTracing.version = "1.10";
+            }
+            else if (version.startsWith("1.11")) {
+                StartRayTracing.version = "1.11";
+            }
+            else if (version.startsWith("1.12")) {
                 StartRayTracing.version = "1.12";
             }
             else if (version.startsWith("1.13")) {
