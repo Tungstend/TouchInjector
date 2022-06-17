@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.tungsten.touchinjector'
-version '1.0'
+version '1.0.131'
 
 repositories {
     mavenCentral()
@@ -33,7 +33,7 @@ jar {
                 'Agent-Class': 'com.tungsten.touchinjector.Premain',
                 'Can-Retransform-Classes': true,
                 'Can-Redefine-Classes': true,
-                'Build-Number': '1'
+                'Build-Number': '131'
         )
     }
 }

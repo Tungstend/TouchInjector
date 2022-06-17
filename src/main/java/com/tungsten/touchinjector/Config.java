@@ -11,7 +11,6 @@ public final class Config {
 	public static boolean touchLogging;
 	public static boolean printUntransformedClass;
 	public static boolean dumpClass;
-	public static boolean regardLiquidAsBlock;
 
 	private static void initDebugOptions() {
 		String prop = System.getProperty("touchinjector.debug");
@@ -44,9 +43,7 @@ public final class Config {
 		}
 	}
 
-	static void init() {
+	public static void init() {
 		initDebugOptions();
-
-		regardLiquidAsBlock = System.getProperty("touchinjector.regardLiquidAsBlock") != null;
 	}
 }

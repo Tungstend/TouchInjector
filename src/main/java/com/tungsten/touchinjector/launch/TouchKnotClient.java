@@ -1,5 +1,6 @@
 package com.tungsten.touchinjector.launch;
 
+import com.tungsten.touchinjector.Config;
 import com.tungsten.touchinjector.raytrace.FabricRayTracing;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.impl.game.GameProvider;
@@ -17,6 +18,9 @@ public class TouchKnotClient {
     public static ClassLoader classLoader;
 
     public static void main(String[] args) {
+
+        Config.init();
+
         log(INFO, "Launch FabricMC from touchinjector !");
 
         try {
