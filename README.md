@@ -6,10 +6,10 @@ Touch-Injector calls the function of minecraft to obtain the type of the mouse p
 
 ## Support Versions
 * Vanilla Minecraft 1.7.x-1.19.x
-* Forge/Forge+OptiFine 1.7.x-1.16.x
+* Forge/Forge+OptiFine 1.7.x-1.19.x
+* OptiFine 1.7.x-1.18.x
+* LiteLoader 1.7.x-1.12.x
 * Fabric 1.14.x-1.19.x
-
-Notice: Touch-Injector does not support Forge 1.17+/all OptiFine version.
 
 ## Dependency
 [Touch-Injector-Dependency](https://github.com/Tungstend/TouchInjectorDependency): compileOnly library.
@@ -20,15 +20,19 @@ Notice: Touch-Injector does not support Forge 1.17+/all OptiFine version.
 Compiler: Java 1.8.
 
 ### Launch
-#### Vanilla Minecraft
+#### Vanilla Minecraft/OptiFine/LiteLoader
 Simply add jvm argument:
 ```bash
--javaagent:[Touch-Injector path]=vanilla
+-javaagent:[Touch-Injector path]=vanilla/optifine/optifine
 ```
 #### Forge
-Simply add jvm argument:
+1.7.x-1.16.x: Simply add jvm argument:
 ```bash
 -javaagent:[Touch-Injector path]=forge
+```
+1.17+: Switch to [Forge](https://github.com/Tungstend/TouchInjector/tree/Forge) branch, Touch-Injector is used as a forge plugin on forge1.17+,just add [Touch-Injector path] to classpath. Then add a jvm argument:
+```bash
+-Dtouchinjector.version=1.17/1.18/1.19
 ```
 #### Fabric
 Touch-Injector is used as mainClass when launch Fabric, add [Touch-Injector path] to classpath, then change the mainClass to:

@@ -9,8 +9,6 @@ import com.tungsten.touchinjector.util.SocketServer;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.tungsten.touchinjector.util.Logging.Level.*;
 import static com.tungsten.touchinjector.util.Logging.log;
@@ -25,20 +23,8 @@ public class ForgeRayTracing {
     }
 
     private static void start() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft", true, Thread.currentThread().getContextClassLoader());
-                    log(INFO, minecraftClass.getName());
-                } catch (ClassNotFoundException e) {
-                    log(ERROR, e.getMessage());
-                }
-            }
-        }, 1000);
         startSocket();
-        log(INFO, "Enable touchinjector for forge " + version);
+        log(INFO, "Enable touchinjector for forge/forge+optifine " + version);
     }
 
     private static void startSocket() {

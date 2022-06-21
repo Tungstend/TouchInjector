@@ -1,9 +1,10 @@
 package com.tungsten.touchinjector.raytrace.forge;
 
+import cpw.mods.modlauncher.Launcher;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import static com.tungsten.touchinjector.util.Logging.Level.ERROR;
 import static com.tungsten.touchinjector.util.Logging.log;
 
@@ -11,7 +12,10 @@ public class RayTracingD {
 
     public static String getRaytraceResultType() {
         try {
-            Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft", true, Thread.currentThread().getContextClassLoader());
+            Field classField = Launcher.class.getDeclaredField("classLoader");
+            classField.setAccessible(true);
+            ClassLoader classLoader = (ClassLoader) classField.get(Launcher.INSTANCE);
+            Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft", true, classLoader);
             Method method = minecraftClass.getDeclaredMethod("m_91087_");
             Object minecraft = method.invoke(null);
             Field targetField = minecraftClass.getDeclaredField("f_91077_");
@@ -27,5 +31,4 @@ public class RayTracingD {
         }
         return "UNKNOWN";
     }
-
 }

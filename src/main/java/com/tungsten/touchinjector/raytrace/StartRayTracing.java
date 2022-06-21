@@ -73,7 +73,7 @@ public class StartRayTracing {
                     initializeForgeInjector();
                     break;
                 case TouchInjector.VERSION_TYPE_OPTIFINE:
-                    //TouchInjector.printAllLoadedClass(Launch.classLoader);
+                    initializeOptiFineInjector();
                     break;
             }
         }
@@ -98,6 +98,10 @@ public class StartRayTracing {
 
     private static void initializeForgeInjector() {
         ForgeRayTracing.init(version);
+    }
+
+    private static void initializeOptiFineInjector() {
+        OptiFineRayTracing.init(version);
     }
 
 }
