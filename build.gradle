@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.tungsten.touchinjector'
-version '1.1.30'
+version '1.1.33'
 
 repositories {
     mavenCentral()
